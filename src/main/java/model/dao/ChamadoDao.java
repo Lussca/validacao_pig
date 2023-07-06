@@ -317,7 +317,7 @@ public class ChamadoDao {
         PreparedStatement pstmt = null;
         try {
             conn = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/banco_val_desktop_pig", "root", "admin");
-            pstmt = conn.prepareStatement("SELECT id_chamado, data_abertura_chamado, cod_chamado, titel_chamado from chamados WHERE id_usuario_tecnico = ? ORDER BY data_abertura_chamado");
+            pstmt = conn.prepareStatement("SELECT id_chamado, data_abertura_chamado, cod_chamado, titel_chamado from chamados WHERE id_usuario_tecnico = ? AND data_fechamento_chamado IS NULL ORDER BY data_abertura_chamado");
             pstmt.setLong(1, idUser);
             ResultSet rs = pstmt.executeQuery();
             while (rs.next()) {
