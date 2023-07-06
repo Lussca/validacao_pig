@@ -171,7 +171,7 @@ public class ChamadoDao {
         PreparedStatement pstmt = null;
         try {
             conn = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/banco_val_desktop_pig", "root", "admin");
-            pstmt = conn.prepareStatement("UPDATE chamados SET titel_chamado = ?, description_chamado = ?,id_chamado =?");
+            pstmt = conn.prepareStatement("UPDATE chamados SET titel_chamado = ?, description_chamado = ? WHERE id_chamado =?");
             pstmt.setString(1, titulo);
             pstmt.setString(2, descricao);
             pstmt.setLong(3, idUser);
