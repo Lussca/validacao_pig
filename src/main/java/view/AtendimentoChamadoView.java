@@ -66,22 +66,18 @@ public class AtendimentoChamadoView extends JFrame {
             if(textSolucao.getText().isBlank()) {
                 JOptionPane.showMessageDialog(this, "Insira uma descrição para a solução.");
             } else{
-                if(textSolucao.getText().length() <= 256) {
-                    ChamadoController chamadoController = new ChamadoController();
-                    try{
-                        boolean resolvido = chamadoController.resolverChamado(idChamado, textSolucao.getText());
-                        if (resolvido){
-                            JOptionPane.showMessageDialog(this, "Chamado resolvido!");
-                            AtendimentoChamadoView atendimentoChamadoView = new AtendimentoChamadoView(idChamado, idUsuario);
-                            atendimentoChamadoView.setVisible(true);
-                            atendimentoChamadoView.setLocationRelativeTo(null);
-                            dispose();
-                        }
-                    } catch (SQLException ex){
-                        JOptionPane.showMessageDialog(this, "Problema ao resolver o chamado.");
+                ChamadoController chamadoController = new ChamadoController();
+                try{
+                    boolean resolvido = chamadoController.resolverChamado(idChamado, textSolucao.getText());
+                    if (resolvido){
+                        JOptionPane.showMessageDialog(this, "Chamado resolvido!");
+                        AtendimentoChamadoView atendimentoChamadoView = new AtendimentoChamadoView(idChamado, idUsuario);
+                        atendimentoChamadoView.setVisible(true);
+                        atendimentoChamadoView.setLocationRelativeTo(null);
+                        dispose();
                     }
-                } else{
-                    JOptionPane.showMessageDialog(this, "Descrição da solução muito grande.");
+                } catch (SQLException ex){
+                    JOptionPane.showMessageDialog(this, "Problema ao resolver o chamado.");
                 }
             }
         } else {

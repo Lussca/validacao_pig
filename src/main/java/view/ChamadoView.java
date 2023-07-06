@@ -85,7 +85,7 @@ public class ChamadoView extends JDialog {
             } else{
                 try {
                     ChamadoController chamadoController = new ChamadoController();
-                    boolean updateCadastro = chamadoController.atualizarChamado(idUser, textTitel.getText(), textDescription.getText());
+                    boolean updateCadastro = chamadoController.atualizarChamado(idChamado, textTitel.getText(), textDescription.getText());
                     if (updateCadastro){
                         JOptionPane.showMessageDialog(this, "Chamado atualizado com sucesso!");
                         IndexView mainView = new IndexView(idUser);

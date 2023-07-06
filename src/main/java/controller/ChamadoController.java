@@ -35,9 +35,9 @@ public class ChamadoController {
         return  chamadoDao.buscarChamadoPorId(idChamado);
     }
 
-    public boolean atualizarChamado(Long idUser, String titulo, String descricao) throws SQLException {
+    public boolean atualizarChamado(Long idChamado, String titulo, String descricao) throws SQLException {
         ChamadoDao chamadoDao = new ChamadoDao();
-        return chamadoDao.atualizarChamado(idUser, titulo, descricao);
+        return chamadoDao.atualizarChamado(idChamado, titulo, descricao);
     }
 
     public ChamadoDto carregarChamadosAtendimentoPorId(Long idChamado) throws SQLException {

@@ -279,14 +279,6 @@ public class IndexView extends JFrame {
             String path = f.getSelectedFile().getPath();
             ChamadoController chamadoController = new ChamadoController();
             try{
-                int numeroChamadosAbertos = chamadoController.buscarTotalChamdosAbertos();
-                int numeroChamadosAtendidos = chamadoController.buscarTotalChamdosAtendidos();
-                int numeroChamadosResolvidos = chamadoController.buscarTotalChamdosResolvidos();
-                int numeroChamadosResolvidosHoje = chamadoController.buscarTotalChamdosResolvidosHoje();
-                int numeroChamadosAbertosPorMim = chamadoController.buscarTotalChamdosAbertosPeloUsuario(idUser);
-                int numeroChamadosAtendidosPorMim = chamadoController.buscarTotalChamdosAtendidosPeloUsuario(idUser);
-                int numeroChamadosResolvidosPorMim = chamadoController.buscarTotalChamdosResolvidosPeloUsuario(idUser);
-
                 Document relatorio = new Document();
                 PdfWriter.getInstance(relatorio, new FileOutputStream(path+"\\relatorio.pdf"));
                 relatorio.open();
@@ -294,13 +286,24 @@ public class IndexView extends JFrame {
                 SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy");
                 String dataHoje = simpleDateFormat.format(new Date());
                 Chunk titulo = new Chunk("Relatório - "+dataHoje, font);
-                Chunk infos = new Chunk("\nNúmero de chamados abertos: "+numeroChamadosAbertos+"\n");
-                infos.append("Número de chamados em atendimento: "+numeroChamadosAtendidos+"\n");
-                infos.append("Número de chamados resolvidos: "+numeroChamadosResolvidos+"\n");
-                infos.append("Número de chamados resolvidos hoje: "+numeroChamadosResolvidosHoje+"\n");
-                infos.append("\nNúmero de chamados abertos por você: "+numeroChamadosAbertosPorMim+"\n");
-                infos.append("Número de chamados atendidos por você: "+numeroChamadosAtendidosPorMim+"\n");
-                infos.append("Número de chamados resolvidos por você: "+numeroChamadosResolvidosPorMim+"\n");
+                Chunk infos = new Chunk("\nCÓDIGO       DATA DE ABERTURA        TÍTULO\n");
+
+                int rowCount = tabChamados.getModel().getRowCount();
+                int columnCount = tabChamados.getModel().getColumnCount();
+                List<Integer> listaIndices = new ArrayList<>();
+                for (int i = 0; i < rowCount; i++){
+                    listaIndices.add(tabChamados.getRowSorter().convertRowIndexToView(i));
+                }
+                for (Integer i :listaIndices){
+                    String chamadoInfo = "";
+                    for (int k = 0; k < columnCount; k++){
+                        String valueAt = (String) tabChamados.getModel().getValueAt(i, k);
+                        chamadoInfo += valueAt +"              ";
+                    }
+                    chamadoInfo += "\n";
+                    infos.append(chamadoInfo);
+                }
+
                 Paragraph p1 = new Paragraph(titulo);
                 Paragraph p2 = new Paragraph(infos);
                 relatorio.add(p1);

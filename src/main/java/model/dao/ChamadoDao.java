@@ -19,8 +19,8 @@ public class ChamadoDao {
         PreparedStatement pstmt = null;
         try {
             conn = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/banco_val_desktop_pig", "root", "admin");
-            pstmt = conn.prepareStatement("INSERT INTO chamados (cod_chamado, titel_chamado, description_chamado, data_abertura_chamado, id_usuario_requisitante)"+
-                    "VALUES(?,?,?,?,?)");
+            pstmt = conn.prepareStatement("INSERT INTO chamados (cod_chamado, titel_chamado, description_chamado, data_abertura_chamado, id_usuario_requisitante, data_abertura_chamado_formatado)"+
+                    "VALUES(?,?,?,?,?,?)");
             String cod_chamado = "C"+idUser.toString()+""+chamado;
             pstmt.setString(1, cod_chamado);
             pstmt.setString(2, titel_chamado);
@@ -28,6 +28,8 @@ public class ChamadoDao {
             Timestamp timestamp = Timestamp.valueOf(LocalDateTime.now());
             pstmt.setTimestamp(4, timestamp);
             pstmt.setLong(5, idUser);
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+            pstmt.setString(6, simpleDateFormat.format(timestamp));
             pstmt.executeUpdate();
             sucessCadastro = true;
         } catch (Exception e) {
@@ -165,16 +167,16 @@ public class ChamadoDao {
         return chamado;
     }
 
-    public boolean atualizarChamado(Long idUser, String titulo, String descricao) throws SQLException {
+    public boolean atualizarChamado(Long idChamado, String titulo, String descricao) throws SQLException {
         boolean atualizou = false;
         Connection conn = null;
         PreparedStatement pstmt = null;
         try {
             conn = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/banco_val_desktop_pig", "root", "admin");
-            pstmt = conn.prepareStatement("UPDATE chamados SET titel_chamado = ?, description_chamado = ?,id_chamado =?");
+            pstmt = conn.prepareStatement("UPDATE chamados SET titel_chamado = ?, description_chamado = ? WHERE id_chamado =?");
             pstmt.setString(1, titulo);
             pstmt.setString(2, descricao);
-            pstmt.setLong(3, idUser);
+            pstmt.setLong(3, idChamado);
             pstmt.executeUpdate();
             atualizou = true;
         } catch (Exception e) {
@@ -260,12 +262,14 @@ public class ChamadoDao {
         PreparedStatement pstmt = null;
         try {
             conn = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/banco_val_desktop_pig", "root", "admin");
-            pstmt = conn.prepareStatement("UPDATE chamados SET description__soluction_chamado = ?, data_fechamento_chamado = ? WHERE id_chamado =?");
+            pstmt = conn.prepareStatement("UPDATE chamados SET description__soluction_chamado = ?, data_fechamento_chamado = ?, data_fechamento_chamado_formatado = ? WHERE id_chamado =?");
             pstmt.setString(1, solucao);
             LocalDateTime now = LocalDateTime.now();
             Timestamp timestamp = Timestamp.valueOf(now);
             pstmt.setTimestamp(2, timestamp);
-            pstmt.setLong(3, idChamado);
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+            pstmt.setString(3, simpleDateFormat.format(timestamp));
+            pstmt.setLong(4, idChamado);
             pstmt.executeUpdate();
             resolvido = true;
         } catch (Exception e) {
